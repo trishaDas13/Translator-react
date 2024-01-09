@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { nanoid } from "nanoid";
-import Code from "./Code";
+import CopyText from "./CopyText";
 import Options from './Options'
 
 function Translator() {
   //todo: declair state varriable
-  const [sourceText, setSourceText] = useState("");
-  const [targetText, setTargetText] = useState("");
+  const [sourceText, setSourceText] = useState("en");
+  const [targetText, setTargetText] = useState("bn");
   const [textInput, setTextInput] = useState("");
   const [results, setResults] = useState("");
 
+  //todo: fetching the API
   async function fetchAPI() {
     const url = "https://text-translator2.p.rapidapi.com/translate";
          let headers = {
@@ -26,8 +27,14 @@ function Translator() {
         try {
           const response = await axios.post(url, data, {headers});
           const result = await response.data;
-          const textResult = JSON.parse(`"${result.data.translatedText}"`);
-          setResults(textResult);
+
+          if(result.status === "success"){
+            const textResult = JSON.parse(`"${result.data.translatedText}"`);
+            setResults(textResult);
+          }
+          else{
+            alert('Error in API call');
+          }
         } catch (error) {
           console.error(error);
         }
@@ -47,7 +54,7 @@ function Translator() {
           onChange={(e) => setSourceText(e.target.value)}
         >
           <option value="main" hidden>
-            Select Target Language
+            Select Source Language
           </option>
           <Options/>
         </select>
@@ -73,6 +80,9 @@ function Translator() {
       <br />
       <button onClick={fetchAPI}>Translate</button>
       <p>{results}</p>
+      <CopyText
+        text = {results}
+      />
     </>
   );
 }
