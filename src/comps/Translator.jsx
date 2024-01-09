@@ -30,6 +30,7 @@ function Translator() {
 
       if (result.status === "success") {
         const textResult = JSON.parse(`"${result.data.translatedText}"`);
+        console.log("textResult");
         setResults(textResult);
       } else {
         alert("Error in API call");
@@ -39,9 +40,6 @@ function Translator() {
     }
   }
 
-  useEffect(() => {
-    fetchAPI();
-  }, []);
 
   return (
     <div className="storage">
