@@ -10,11 +10,12 @@ function CopyText(props) {
             setCopyStatus('Copied!');
             setTimeout(() => {
                 setCopyStatus('Copy');
-            }, 100);
+            }, 300);
         }
     }   
   return (
     <button 
+        className="copy"
         onClick={copyToClipboard}
     >{copyStatus}</button>
   )
